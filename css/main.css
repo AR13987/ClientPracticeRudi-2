@@ -130,3 +130,11 @@ body {
     height: 100%;
 }
 
+.card {
+    background: #c3faff;
+    width: 25%;
+    height: 25%;
+    margin: 0;
+    margin-left: 2em;
+    margin-top: 2em;
+}
