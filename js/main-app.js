@@ -4,12 +4,15 @@ let app = new Vue({
         columns: {
             firstColumn: [],
             secondColumn: [],
-            thirdColumn: []
+            thirdColumn: [],
         },
+
         newCard: {
             title: '',
             items: []
         },
+
+        blockFirstColumn: false
     },
 
     methods: {
@@ -33,6 +36,12 @@ let app = new Vue({
             const card = this.columns[column][index]
             const completedItems = card.items.filter(item => item.completed).length
             const progress = (completedItems / card.items.length) * 100
+
+            if  (column === 'firstColumn' && progress > 50) {
+                if (this.columns.secondColumn.length >= 5) {
+                    this.blockFirstColumn = true
+                }
+            }
 
             if (progress === 100 && column !== 'thirdColumn') {
                 card.completedAt = new Date().toLocaleString()

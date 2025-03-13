@@ -13,7 +13,8 @@
 <body>
 <div id="app">
     <div class="addCard">
-        <input type="text" v-model="newCard.title" placeholder="Заголовок"/>
+        <h3>Добавление карточки</h3>
+        <input type="text" v-model="newCard.title" placeholder="Заголовок карточки"/>
         <textarea v-model="newCard.items" placeholder="Список (вводите задачи через запятую)"></textarea>
         <button @click="addCard">Добавить карточку</button>
     </div>
@@ -46,7 +47,6 @@
         </div>
 
         <div class="thirdColumn">
-            <h3>Третий столбец (Вып.задачи/Неограниченное число карточек)</h3>
             <div v-for="(card, index) in columns.thirdColumn" :key="index" class="card">
                 <h4>{{card.title}}</h4>
                 <ul>
