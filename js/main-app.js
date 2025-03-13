@@ -9,7 +9,7 @@ let app = new Vue({
 
         newCard: {
             title: '',
-            items: []
+            items: ''
         },
 
         blockFirstColumn: false
@@ -23,19 +23,24 @@ let app = new Vue({
             }
 
             if (this.columns.firstColumn.length < 3) {
-                if (this.newCard.items.length < 3 || this.newCard.items.length > 5) {
+                const itemsArray = this.newCard.items.split(',').map(item => ({
+                   text: item.trim(),
+                   completed: false
+                }))
+
+                if (itemsArray.length < 3 || itemsArray.length > 5) {
                     alert('Карточка должна содержать от 3 до 5 задач')
                     return
                 }
+
                 this.columns.firstColumn.push({
                     title: this.newCard.title,
-                    items: this.newCard.items.map(item => ({
-                        title: item.trim(),
-                        completed: false
-                    })),
-                    completed: null
+                    items: itemsArray,
+                    completedAt: null
                 })
-                this.newCard = {title: '', items: []}
+
+                this.newCard = {title: '', items: ''}
+                this.saveData()
             } else {
                 alert('Первый столбец может содержать не более 3 карточек')
             }
@@ -46,27 +51,23 @@ let app = new Vue({
             const completedItems = card.items.filter(item => item.completed).length
             const progress = (completedItems / card.items.length) * 100
 
-            if  (column === 'firstColumn' && progress > 50) {
+            if (progress === 100) {
+                card.completedAt = new Date().toLocaleString()
+                this.moveCard(column, index, 'thirdColumn')
+
+                if (column === 'secondColumn' && this.columns.secondColumn.length < 5) {
+                    this.blockFirstColumn = false
+                }
+
+            } else if (progress > 50 && column === 'firstColumn') {
+                this.moveCard(column, index, 'secondColumn')
+
                 if (this.columns.secondColumn.length >= 5) {
                     this.blockFirstColumn = true
                 }
             }
 
-            if (progress === 100 && column === 'secondColumn') {
-                card.completedAt = new Date().toLocaleString()
-                this.moveCard(column, index, 'thirdColumn')
-
-                if (this.columns.secondColumn.length < 5) {
-                    this.blockFirstColumn = false
-                }
-            }
-
-            if (progress === 100 && column !== 'thirdColumn') {
-                card.completedAt = new Date().toLocaleString()
-                this.moveCard(column, index, 'thirdColumn')
-            } else if (progress > 50 && column === 'firstColumn') {
-                this.moveCard(column, index, 'secondColumn')
-            }
+            this.saveData()
         },
 
         moveCard(fromColumn, cardIndex, toColumn) {
@@ -76,6 +77,28 @@ let app = new Vue({
             }
             const card = this.columns[fromColumn].splice(cardIndex, 1)[0]
             this.columns[toColumn].push(card)
+            this.saveData()
+        },
+
+        saveData() {
+            const data = {
+                columns: this.columns,
+                blockFirstColumn: this.blockFirstColumn,
+            }
+            localStorage.setItem('notesAppData', JSON.stringify(data))
+        },
+
+        loadData() {
+            const savedData = localStorage.getItem('notesAppData')
+            if (savedData) {
+                const parsedData = JSON.parse(savedData)
+                this.columns = parsedData.columns
+                this.blockFirstColumn = parsedData.blockFirstColumn
+            }
         }
+    },
+
+    created() {
+        this.loadData()
     }
 })
