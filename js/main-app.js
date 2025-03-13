@@ -17,10 +17,19 @@ let app = new Vue({
 
     methods: {
         addCard() {
+            if (this.blockFirstColumn) {
+                alert('Первый столбец заблокирован, пока одна из карточек второго столбца не будет завершена')
+                return
+            }
+
             if (this.columns.firstColumn.length < 3) {
+                if (this.newCard.items.length < 3 || this.newCard.items.length > 5) {
+                    alert('Карточка должна содержать от 3 до 5 задач')
+                    return
+                }
                 this.columns.firstColumn.push({
                     title: this.newCard.title,
-                    items: this.newCard.items.split(',').map(item => ({
+                    items: this.newCard.items.map(item => ({
                         title: item.trim(),
                         completed: false
                     })),
@@ -40,6 +49,15 @@ let app = new Vue({
             if  (column === 'firstColumn' && progress > 50) {
                 if (this.columns.secondColumn.length >= 5) {
                     this.blockFirstColumn = true
+                }
+            }
+
+            if (progress === 100 && column === 'secondColumn') {
+                card.completedAt = new Date().toLocaleString()
+                this.moveCard(column, index, 'thirdColumn')
+
+                if (this.columns.secondColumn.length < 5) {
+                    this.blockFirstColumn = false
                 }
             }
 
