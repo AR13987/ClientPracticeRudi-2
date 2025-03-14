@@ -4,7 +4,7 @@ let app = new Vue({
         columns: {
             firstColumn: [],
             secondColumn: [],
-            thirdColumn: [],
+            thirdColumn: []
         },
 
         newCard: {
@@ -12,7 +12,9 @@ let app = new Vue({
             items: ''
         },
 
-        blockFirstColumn: false
+        blockFirstColumn: false,
+
+        selectedSeparator: ','
     },
 
     methods: {
@@ -23,7 +25,7 @@ let app = new Vue({
             }
 
             if (this.columns.firstColumn.length < 3) {
-                const itemsArray = this.newCard.items.split(',').map(item => ({
+                const itemsArray = this.newCard.items.split(this.selectedSeparator).map(item => ({
                    text: item.trim(),
                    completed: false
                 }))

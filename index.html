@@ -15,15 +15,15 @@
     <div class="addCard">
         <h3>Добавление карточки</h3>
         <input type="text" v-model="newCard.title" placeholder="Заголовок карточки"/>
-        <form class="fruit">
-            <label for="fruits">Выберите фрукт:</label>
-            <select id="fruits" name="fruits">
-                <option value="apple">Яблоко</option>
-                <option value="banana">Банан</option>
-                <option value="orange">Апельсин</option>
+        <form class="custom-marks">
+            <label>Выберите символ для разделения задач: </label>
+            <select id="marks" v-model="selectedSeparator">
+                <option value=",">,</option>
+                <option value=";">;</option>
+                <option value="-">-</option>
             </select>
         </form>
-        <textarea v-model="newCard.items" placeholder="Список (вводите задачи через запятую)"></textarea>
+        <textarea v-model="newCard.items" placeholder="Список (вводите задачи через выбранный символ)"></textarea>
         <button @click="addCard">Добавить карточку</button>
     </div>
 
