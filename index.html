@@ -23,7 +23,7 @@
                 <option value="-">-</option>
             </select>
         </form>
-        <textarea v-model="newCard.items" placeholder="Список (вводите задачи через выбранный символ)"></textarea>
+        <textarea v-model="newCard.items" placeholder="Список (вводите задачи через выбранный символ, '!' перед задачей указывает на ее важность)"></textarea>
         <button @click="addCard">Добавить карточку</button>
     </div>
 
@@ -33,7 +33,7 @@
             <div v-for="(card, index) in columns.firstColumn" :key="index" class="card">
                 <h4>{{card.title}}</h4>
                 <ul>
-                    <li v-for="(item, i) in card.items" :key="i">
+                    <li v-for="(item, i) in card.items" :key="i" :class="{importantColor: item.important}">
                         <input type="checkbox" v-model="item.completed" @change="updateProgress('firstColumn', index)"/>
                         {{item.text}}
                     </li>
@@ -46,7 +46,7 @@
             <div v-for="(card, index) in columns.secondColumn" :key="index" class="card">
                 <h4>{{card.title}}</h4>
                 <ul>
-                    <li v-for="(item, i) in card.items" :key="i">
+                    <li v-for="(item, i) in card.items" :key="i" :class="{importantColor: item.important}">
                         <input type="checkbox" v-model="item.completed" @change="updateProgress('secondColumn', index)"/>
                         {{item.text}}
                     </li>
@@ -58,7 +58,7 @@
             <div v-for="(card, index) in columns.thirdColumn" :key="index" class="card">
                 <h4>{{card.title}}</h4>
                 <ul>
-                    <li v-for="(item, i) in card.items" :key="i">
+                    <li v-for="(item, i) in card.items" :key="i" :class="{importantColor: item.important}">
                         <input type="checkbox" v-model="item.completed"/>
                         {{item.text}}
                     </li>

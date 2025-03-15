@@ -25,10 +25,14 @@ let app = new Vue({
             }
 
             if (this.columns.firstColumn.length < 3) {
-                const itemsArray = this.newCard.items.split(this.selectedSeparator).map(item => ({
-                   text: item.trim(),
-                   completed: false
-                }))
+                const itemsArray = this.newCard.items.split(this.selectedSeparator).map(item => {
+                   const trimmedItem = item.trim()
+                   return {
+                        text: trimmedItem.startsWith('!') ? trimmedItem.slice(1) : trimmedItem,
+                        completed: false,
+                        important: trimmedItem.startsWith('!')
+                   }
+                })
 
                 const allFilledItems = itemsArray.every(item => item.text !== '')
                 if (!allFilledItems) {
