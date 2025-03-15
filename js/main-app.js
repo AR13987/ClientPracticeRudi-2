@@ -30,6 +30,13 @@ let app = new Vue({
                    completed: false
                 }))
 
+                const allFilledItems = itemsArray.every(item => item.text !== '')
+                if (!allFilledItems) {
+                    alert('Нельзя добавлять в задачи пустые значения')
+                    return
+                }
+
+
                 if (itemsArray.length < 3 || itemsArray.length > 5) {
                     alert('Карточка должна содержать от 3 до 5 задач')
                     return
