@@ -14,7 +14,7 @@ let app = new Vue({
 
         blockFirstColumn: false,
 
-        selectedSeparator: ','
+        selectedSeparator: ''
     },
 
     methods: {
